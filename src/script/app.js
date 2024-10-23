@@ -1,9 +1,13 @@
 import Alpine from "alpinejs";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faLink as faLink } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLink as faLink,
+  faCopy as faCopy,
+  faCloudArrowDown as faCloudArrowDown,
+} from "@fortawesome/free-solid-svg-icons";
 
-library.add(faLink);
+library.add(faLink, faCopy, faCloudArrowDown);
 dom.i2svg();
 
 Alpine.data("container", () => ({
@@ -11,6 +15,7 @@ Alpine.data("container", () => ({
   shortURL: "",
   active: true,
   showLinkIcon: false,
+  activeMsg: "",
 
   isValidURL(inputURL) {
     const urlPattern =
@@ -73,12 +78,25 @@ Alpine.data("container", () => ({
 
       if (this.active) {
         this.showLinkIcon = true;
+        this.activeMsg = "";
       } else {
-        this.showLinkIcon = true;
+        this.showLinkIcon = false;
+        this.activeMsg = "尚未啟用";
       }
     } catch (error) {
       console.error("Error:", error);
     }
+  },
+
+  copyShortURL() {
+    navigator.clipboard
+      .writeText(this.shortURL)
+      .then(() => {
+        alert("已複製");
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
   },
 }));
 

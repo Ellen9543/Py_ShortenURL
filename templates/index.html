@@ -27,6 +27,9 @@
             <a :href="shortURL" target="_blank" class="pr-2">
               <i class="fa-solid fa-link"></i>
             </a>
+            <button @click.prevent="copyShortURL">
+              <i class="fa-solid fa-copy"></i>
+            </button>
           </div>
         </div>
         <input x-model="shortURL" type="text" class="input input-bordered w-full" />

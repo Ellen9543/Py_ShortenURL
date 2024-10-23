@@ -23,6 +23,7 @@
       <label class="form-control flex-1">
         <div class="label">
           <span class="label-text">短網址</span>
+          <span x-text="activeMsg" class="text-red-700"></span>
           <div x-show="showLinkIcon">
             <a :href="shortURL" target="_blank" class="pr-2">
               <i class="fa-solid fa-link"></i>

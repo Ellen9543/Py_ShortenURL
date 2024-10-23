@@ -1,4 +1,5 @@
 import Alpine from "alpinejs";
+import Swal from "sweetalert2";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -9,6 +10,19 @@ import {
 
 library.add(faLink, faCopy, faCloudArrowDown);
 dom.i2svg();
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top",
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: true,
+
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+});
 
 Alpine.data("container", () => ({
   url: "",
@@ -27,10 +41,16 @@ Alpine.data("container", () => ({
   checkURL(inputURL) {
     let isValid = true;
     if (inputURL == "") {
-      alert("請輸入連結");
+      Toast.fire({
+        text: "請輸入連結",
+        icon: "warning",
+      });
       isValid = false;
     } else if (!this.isValidURL(inputURL)) {
-      alert("請檢查連結格式是否正確");
+      Toast.fire({
+        text: "請檢查連結格式是否正確",
+        icon: "warning",
+      });
       isValid = false;
     }
     return isValid;
@@ -63,10 +83,16 @@ Alpine.data("container", () => ({
         }
 
         this.urlInfo = metaInfo.join("\n");
-        alert("取得頁面資訊");
+        Toast.fire({
+          text: "取得頁面資訊",
+          icon: "success",
+        });
       } catch (error) {
         console.error("Error:", error);
-        alert("無法取得頁面資訊");
+        Toast.fire({
+          text: "無法取得頁面資訊",
+          icon: "error",
+        });
       }
     }
   },
@@ -78,7 +104,10 @@ Alpine.data("container", () => ({
       if (shortURL.startsWith(location.href)) {
         shortCode = shortURL.split(location.href).pop();
       } else if (shortURL.startsWith("http")) {
-        alert("請檢查短網址格式是否正確");
+        Toast.fire({
+          text: "請檢查短網址格式是否正確",
+          icon: "warning",
+        });
         return;
       }
     }
@@ -112,7 +141,10 @@ Alpine.data("container", () => ({
       let data = await response.json();
 
       if ("fail" == data.status) {
-        alert(data.error);
+        Toast.fire({
+          text: data.error,
+          icon: "error",
+        });
         this.shortURL = "";
         return;
       }
@@ -122,9 +154,35 @@ Alpine.data("container", () => ({
       if (this.active) {
         this.showLinkIcon = true;
         this.activeMsg = "";
+
+        // 取 copy icon 的 svg
+        const svg = document.querySelector('[data-icon="copy"]');
+        Swal.fire({
+          title: "<strong>短網址產生成功</strong>",
+          icon: "success",
+          html: `<a href="${this.shortURL}" target="_blank" class="text-sky-700 underline pr-2">${this.shortURL}</a>
+                 <button id="copyButton">${svg.outerHTML}<button>`,
+          showCloseButton: true,
+
+          didOpen: () => {
+            // 開後綁定click事件
+            const copyButton =
+              Swal.getHtmlContainer().querySelector("#copyButton");
+            copyButton.addEventListener("click", () => {
+              this.copyShortURL();
+            });
+          },
+        });
       } else {
         this.showLinkIcon = false;
         this.activeMsg = "尚未啟用";
+
+        Swal.fire({
+          title: "<strong>短網址產生成功</strong>",
+          icon: "success",
+          html: this.activeMsg,
+          showCloseButton: true,
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -135,7 +193,10 @@ Alpine.data("container", () => ({
     navigator.clipboard
       .writeText(this.shortURL)
       .then(() => {
-        alert("已複製");
+        Toast.fire({
+          text: "已複製",
+          icon: "success",
+        });
       })
       .catch((err) => {
         console.error("Error:", err);

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 from .models import ShortURL
 import json
 
@@ -16,6 +17,18 @@ def submit_url(request):
     original_url = data.get("url")
     short_code = data.get("short_code")
     is_active = data.get("is_active")
+
+    url = ShortURL.objects.filter(
+        Q(short_code=short_code) & ~Q(original_url=original_url)
+    )
+
+    if url:
+        return JsonResponse(
+            {
+                "status": "fail",
+                "error": "短網址已被使用",
+            }
+        )
 
     url, _ = ShortURL.objects.get_or_create(
         original_url=original_url,
@@ -35,6 +48,7 @@ def submit_url(request):
 
     return JsonResponse(
         {
+            "status": "success",
             "short_url": url.short_code,
         }
     )

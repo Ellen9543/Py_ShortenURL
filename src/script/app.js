@@ -66,6 +66,7 @@ Alpine.data("container", () => ({
         alert("取得頁面資訊");
       } catch (error) {
         console.error("Error:", error);
+        alert("無法取得頁面資訊");
       }
     }
   },
@@ -109,6 +110,13 @@ Alpine.data("container", () => ({
       }
 
       let data = await response.json();
+
+      if ("fail" == data.status) {
+        alert(data.error);
+        this.shortURL = "";
+        return;
+      }
+
       this.shortURL = location.href + data.short_url;
 
       if (this.active) {

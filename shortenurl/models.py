@@ -14,5 +14,8 @@ class ShortURL(models.Model):
 
     def generate_short_code(self):
         characters = string.ascii_letters + string.digits
-        short_code = "".join(random.choices(characters, k=6))
-        return short_code
+
+        while True:
+            short_code = "".join(random.choices(characters, k=6))
+            if not ShortURL.objects.filter(short_code=short_code).exists():
+                return short_code

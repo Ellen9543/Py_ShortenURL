@@ -16,6 +16,7 @@ Alpine.data("container", () => ({
   active: true,
   showLinkIcon: false,
   activeMsg: "",
+  urlInfo: "",
 
   isValidURL(inputURL) {
     const urlPattern =
@@ -33,6 +34,40 @@ Alpine.data("container", () => ({
       isValid = false;
     }
     return isValid;
+  },
+
+  async getURLInfo() {
+    const inputURL = this.url.trim();
+    if (this.checkURL(inputURL)) {
+      try {
+        let response = await fetch(inputURL);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        let data = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, "text/html");
+
+        const title = doc.querySelector("title").innerText;
+        const description = doc.querySelectorAll('meta[name="description"]')[0];
+
+        const metaInfo = [];
+        metaInfo.push(`title => ${title}`);
+
+        if (description) {
+          metaInfo.push(
+            `description => ${description.getAttribute("content")}`
+          );
+        }
+
+        this.urlInfo = metaInfo.join("\n");
+        alert("取得頁面資訊");
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
   },
 
   setShortURL() {

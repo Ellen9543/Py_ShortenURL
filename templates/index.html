@@ -42,9 +42,12 @@
       <div class="form-control">
         <div class="label justify-start gap-2">
           <span class="label-text">備註說明</span>
-          <button class="btn btn-active btn-neutral btn-sm text-white">取得頁面資訊</button>
+          <button @click.prevent="getURLInfo" class="btn btn-active btn-neutral btn-sm text-white">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+            取得頁面資訊
+          </button>
         </div>
-        <textarea class="textarea textarea-bordered h-24"></textarea>  
+        <textarea x-model="urlInfo" class="textarea textarea-bordered h-24"></textarea>  
         <label class="label justify-start gap-2 cursor-pointer">
           <input x-model="active" type="checkbox" checked="checked" class="checkbox checkbox-sm" />
           <span class="label-text">是否啟用</span>

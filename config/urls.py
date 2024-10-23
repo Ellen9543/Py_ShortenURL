@@ -1,5 +1,5 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path("", include("shortenturl.urls")),
+    path("", include("shortenurl.urls")),
 ]

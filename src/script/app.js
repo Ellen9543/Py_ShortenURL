@@ -1,9 +1,16 @@
 import Alpine from "alpinejs";
 
+import { library, dom } from "@fortawesome/fontawesome-svg-core";
+import { faLink as faLink } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faLink);
+dom.i2svg();
+
 Alpine.data("container", () => ({
   url: "",
   shortURL: "",
   active: true,
+  showLinkIcon: false,
 
   isValidURL(inputURL) {
     const urlPattern =
@@ -63,6 +70,12 @@ Alpine.data("container", () => ({
 
       let data = await response.json();
       this.shortURL = location.href + data.short_url;
+
+      if (this.active) {
+        this.showLinkIcon = true;
+      } else {
+        this.showLinkIcon = true;
+      }
     } catch (error) {
       console.error("Error:", error);
     }

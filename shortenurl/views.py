@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import ShortURL
@@ -38,3 +38,11 @@ def submit_url(request):
             "short_url": url.short_code,
         }
     )
+
+
+def redirect_to_url(request, short_url):
+    try:
+        url = ShortURL.objects.get(short_code=short_url, is_active=True)
+        return redirect(url.original_url)
+    except ShortURL.DoesNotExist:
+        return JsonResponse({"error": "URL not found!"}, status=404)

@@ -23,6 +23,11 @@
       <label class="form-control flex-1">
         <div class="label">
           <span class="label-text">短網址</span>
+          <div x-show="showLinkIcon">
+            <a :href="shortURL" target="_blank" class="pr-2">
+              <i class="fa-solid fa-link"></i>
+            </a>
+          </div>
         </div>
         <input x-model="shortURL" type="text" class="input input-bordered w-full" />
         <div class="label">

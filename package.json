@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"tailwindcss -i ./src/style/style.css -o ./static/style/style.css --watch\" \"esbuild ./src/script/app.js --bundle --outfile=./static/script/app.js --watch\"",
-    "build": "concurrently \"tailwindcss -i ./src/style/style.css -o ./static/style/style.css --watch\" \"esbuild ./src/script/app.js --bundle --outfile=./static/script/app.js --watch\""
+    "build": "concurrently \"tailwindcss -i ./src/style/style.css -o ./static/style/style.css \" \"esbuild ./src/script/app.js --bundle --outfile=./static/script/app.js \""
   },
   "keywords": [],
   "author": "",

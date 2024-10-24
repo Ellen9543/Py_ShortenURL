@@ -10,6 +10,13 @@ Alpine.data("container", () => ({
   activeMsg: "",
   urlInfo: "",
 
+  init() {
+    this.shortURL = "";
+    this.activeMsg = "";
+    this.showLinkIcon = false;
+    this.urlInfo = "";
+  },
+
   isValidURL(inputURL) {
     const urlPattern =
       /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/[^\s]*)?$/;

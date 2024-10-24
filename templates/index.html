@@ -18,9 +18,9 @@
         <div class="label h-10">
           <span class="label-text h-[24px]">連結</span>
         </div>
-        <input x-model="url" type="text" placeholder="請輸入或貼上完整的網址" class="input input-bordered w-full" />
+        <input x-model="url" type="text" x-on:change="init" placeholder="請輸入或貼上完整的網址" class="input input-bordered w-full" />
       </label>
-      <label class="form-control flex-1">
+      <div class="form-control flex-1">
         <div class="label h-10">
           <span class="label-text">短網址</span>
           <span x-text="activeMsg" class="text-red-700"></span>
@@ -37,7 +37,7 @@
         <div class="label">
           <span class="label-text-alt">可自行填寫，或是自動產生</span>
         </div>
-      </label>
+      </div>
     </div>
     <div class="mt-8 md:mt-2">
       <div class="form-control">
@@ -49,7 +49,7 @@
           </button>
         </div>
         <textarea x-model="urlInfo" class="textarea textarea-bordered h-24"></textarea>  
-        <label class="label justify-start gap-2 cursor-pointer">
+        <label class="label justify-start gap-2 cursor-pointer w-max">
           <input x-model="active" type="checkbox" checked="checked" class="checkbox checkbox-sm" />
           <span class="label-text">是否啟用</span>
         </label>
